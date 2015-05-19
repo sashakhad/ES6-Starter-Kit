@@ -1,2 +1,2 @@
-# es6tutorials
-exploring the new features of es6
+# ES6tutorials
+exploring the new features of ES6
