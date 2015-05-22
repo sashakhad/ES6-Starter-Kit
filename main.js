@@ -47,19 +47,6 @@ function Animal(){
 
 var animal = new Animal();
 
-//THE PROBLEM
-// function Animal() {
-//   // The Animal() constructor defines `this` as itself.
-//   this.age = 0;
-
-//   setInterval(function growUp() {
-//     // In nonstrict mode, the growUp() function defines `this` 
-//     // as the global object, which is different from the `this`
-//     // defined by the Animal() constructor.
-//     this.age++;
-//   }, 1000);
-// }
-
 //OLD WAY
 // function Animal() {
 //   var self = this; // Some choose `that` instead of `self`. 
@@ -399,3 +386,23 @@ factorial(100000)
 // generator.next() // returns {value: "b", done: false}  
 // generator.next() // returns {value: "c", done: true}  
 // generator.next() // returns {value: undefined, done: true} -- it has nothing else to generate!   
+
+//Two-Way data passing
+
+// From Kyle Simpson
+// function *foo(x) {
+//     var y = 2 * (yield (x + 1));
+//     var z = yield (y / 3);
+//     return (x + y + z);
+// }
+
+// var it = foo( 5 );
+
+// // note: not sending anything into `next()` here
+// console.log( it.next() );       // { value:6, done:false }
+// console.log( it.next( 12 ) );   // { value:8, done:false }
+// console.log( it.next( 13 ) );   // { value:42, done:true }
+
+// The yield (x + 1) is what sends out value 6. The second next(12) call sends 12 to that waiting yield (x + 1) expression, so y is set to 12 * 2, value 24. Then the subsequent yield (y / 3) (yield (24 / 3)) is what sends out the value 8. The third next(13) call sends 13 to that waiting yield (y / 3) expression, making z set to 13.
+
+// Finally, return (x + y + z) is return (5 + 24 + 13), or 42 being returned out as the last value.
