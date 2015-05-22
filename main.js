@@ -28,12 +28,12 @@ let fn = (x,y,z) => {
 }
 fn(1,2,3)
 
-//Single parameter and single line.
+//Single parameter and single line. But really, just put () around your params for legibility.
 //Implicit return 
 let add1 = x => x + 1 
 
 //No implicit return when function body is in {}
-let add2 = x => {x + 2}
+let add2 = x => {return x + 2}
 
 //Lexical 'this' binding to whatever 'this' is during declaration
 //NEW WAY
@@ -94,16 +94,18 @@ class Shmooshette extends Shmoosh {
   toString(){
     return super.toString() + " is " + this.feeling;
   }
-  sayHi(){
-    return "HI!!!! from " + super.string();
-  }
   doMath(){
     return "2 + 2 equals " + (2 + 2)
+  }
+  sayHi(){
+    return `Hi!!!! from ${super.toString()}`;
   }
 }
 
 let shmooshette = new Shmooshette("Miss", "Shmoosh", "shmooshy");
 shmooshette.toString() // returns "Miss Shmoosh is shmooshy"
+shmooshette.doMath()
+console.log(shmooshette.sayHi())
 
 //////////////////////////////////////////////Template Strings///////////////////////////////////////
 
@@ -118,9 +120,10 @@ console.log("Fifteen is " + (a + b) + " and not " + (2 * a + b) + ".");
 var a = 5;
 var b = 10;
 console.log(`Fifteen is ${a + b} and not ${2 * a + b}.`);
+
 // "Fifteen is 15 and
 // not 20." 
-//NOTE: you must use single quotes ('') to evaluate expressions within a string.
+//NOTE: you must use backticks (``) to evaluate expressions within a string.
 
 //////////////////////////////////////////////Private Properties///////////////////////////////////////
 
@@ -146,6 +149,11 @@ for(var key in beast){
 
 //////////////////////////////////////////////Destructuring///////////////////////////////////////
 
+
+//Objects
+//Be careful of the irrefutable patterns
+//Also note that ? is not supported by babel, thus you cannot use it in this repo
+
 function displayPerson(p){  
     let {name, age} = p;
     console.log(name, age);
@@ -161,6 +169,30 @@ function displayPersonDefaults({name = "no name provided", age = 0}){
 }
 
 displayPersonDefaults(nobody) // "no name provided 0"
+
+//Arrays
+
+var numbers = [1,2,3,4,5];  
+var [first, second,,,,fifth] = numbers;
+console.log(first, second, fifth) // 1,2,5
+
+//Refutable patterns
+var [x] = [1,2] // x = 1  
+//var [one, two, three] = [1,2] //throws an error  
+//var ?[one, two, three] = [1,2] //no error
+
+//Swapping
+var a = 1;  
+var b = 2;
+
+//The Old Way
+var temp = a;  
+a = b;  
+b = temp;
+
+//The New Way
+[b, a] = [a, b];
+
 
 
 //////////////////////////////////////////////Spread Operators//////////////////////////////////
@@ -205,6 +237,21 @@ hi("")       // Hi !
 hi()         // Hello World!  
 hi(undefined) // Hello World!  
 
+//Function expressions as default params do not evaluate in line!
+
+var count = 0;  
+function increment(){  
+    return count++;
+}
+
+function countDat(totalCount = increment()){  
+    console.log(totalCount)
+}
+
+countDat()  // 0  
+countDat()  // 0
+
+
 //NOTE:
 //No default parameters for ...rest params
 /*
@@ -216,16 +263,111 @@ fn() // totally cool!
 */
 
 
-//Modules
+////////////////////////////////////////////////Modules//////////////////////////////////////////////
 
 import {x, y} from "./module.js";  
 
-x()
-y()
+x(); // logs x
+y(); // logs y
+
+//Aliasing  
+import {B as C} from "./module.js";
+var c = new C(); // this is an instance of the A class!  
+c.show();
+
+import * as lib from "./module";
+
+lib.z(); // logs z
+
+//Re-export!
+export * from "./module"
+
+//Programmatic Loading API -- not yet supported in this babel/ this repo
+
+// System.import("./module.js")  
+// .then(your_module => {
+//     //executes the function only after your module has been loaded
+//     console.log("module has been loaded!")
+// })
+// .catch(error =>  {
+//     //if there's an error, do whatever you need
+// })
+
+// Promise.all(  
+//     ["module1", "module2", "module3"]
+//     .map(module => System.import(module))
+// )
+// .then(function([module1, module2, module3]){
+//     //your code
+// })
 
 //////////////////////////////////////////////Collections: Set, Map, WeakMap, WeakSet/////////////////////
 
+//collection of unique values
+
+let set = new Set();
+set.add(1)
+//set.push(1) --> throws error
+
+let map = new Map();
+map.set("name", "Gaia")
+map.get("name") //--> Gaia
+//Remember -- there is no typecasting in maps
+map.set(1, 1)
+map.get("1") //doesn't get anything because "1" has not been set on the map
+
+//For instance, you can use user object that you grab from an API and store that object as your key
+//This would mean that you wouldn't have to store an associated user ID your object
+
+var baby = {name: "Ben", age: 2}
+var babyHobbies = new Map()
+babyHobbies.set(baby, "crying")
+//REMEMBER: complex objects refer to a specific space in memory. Identical objects won't grab the same value.
+var clone = {name: "Ben", age: 2}
+babyHobbies.get(clone) // won't work!
+
+//WeakMap and WeakSet are exaclty like Map and Set but their keys will be discarded if they are not referred to anywhere else in your code
+
 //////////////////////////////////////////////Promises///////////////////////////////////////
+
+//NOTE: Promises are not yet supported by the compiler
+
+// var promise = Promise(function(resolve, reject){  
+//     //some async code here
+//     //like AJAX, loading an image, writing to the DOM, etc
+
+//     if(true/*nothing went wrong*/){
+//         resolve("Stuff worked!");
+//     } else {
+//         reject(Error("It didn't work!"));
+//     }
+// });
+
+// promise.then(function(result){  
+//     console.log(result) // logs "Stuff worked!"
+//     }, function(err){
+//         console.log(err) // Error: "It didn't work!"
+//     }
+// )        
+
+//jQuery Example
+// var promise1 = $.get(something)  
+// var promise2 = $.get(something_else)
+
+// Promise.all([promise1, promise2)  
+// .then(function(results){
+//     //do stuff with each promise
+// },
+// function(err){  
+//     //do something with your error
+// }
+
+//Static Promise methods
+// Promise.all(your_items) // wait until all of these promises return  
+// Promise.race(your_items) // wait until one of these promises return  
+// Promise.reject(err) // gives you a rejected promise  
+// Promise.resolve(value) // gives you resolved promise  
+
 
 //////////////////////////////////////////////Tail Calls: Recursion///////////////////////////////////////
 
@@ -241,7 +383,9 @@ factorial(100000)
 ///////////////////////////////////////////////Generators///////////////////////////////////////
 
 //Generator code won't work until regenerator is fully implemented. 
-//Uncommenting this will crash the code -- update coming soon.
+//Uncommenting this will crash the code -- update coming.
+
+//Run-to-complete paradigm
 
 // function *abc(){  
 //     yield "a";
