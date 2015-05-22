@@ -73,7 +73,7 @@ for(var key in beast){
 
 //Modules
 
-import {x, y} from "./hi.js";  
+import {x, y} from "./module.js";  
 
 x()
 y()
