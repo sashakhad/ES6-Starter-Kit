@@ -17,8 +17,8 @@ for(let i = 0; i < 3; i++){
 //const
 //like let, but no reassignment allowed
 
-const a = 1
-//a = 2 // attempts to reassign will throw an error
+const constant = 1
+//constant = 2 // attempts to reassign will throw an error
 
 //////////////////////////////////////////////Arrow Functions///////////////////////////////////////
 
@@ -146,13 +146,13 @@ for(var key in beast){
 
 //////////////////////////////////////////////Destructuring///////////////////////////////////////
 
-function displayPersonPerson(p){  
+function displayPerson(p){  
     let {name, age} = p;
     console.log(name, age);
 }
 
 var john = {name:"John", age: 20};  
-displayPerson(person); //logs John 20
+displayPerson(john); //logs John 20
 
 var nobody = {}
 
