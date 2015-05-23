@@ -317,25 +317,23 @@ babyHobbies.get(clone) // won't work!
 
 //////////////////////////////////////////////Promises///////////////////////////////////////
 
-//NOTE: Promises are not yet supported by the compiler
+var promise = new Promise(function(resolve, reject){  
+    //some async code here
+    //like AJAX, loading an image, writing to the DOM, etc
 
-// var promise = Promise(function(resolve, reject){  
-//     //some async code here
-//     //like AJAX, loading an image, writing to the DOM, etc
+    if(true/*nothing went wrong*/){
+        resolve("Stuff worked!");
+    } else {
+        reject(Error("It didn't work!"));
+    }
+});
 
-//     if(true/*nothing went wrong*/){
-//         resolve("Stuff worked!");
-//     } else {
-//         reject(Error("It didn't work!"));
-//     }
-// });
-
-// promise.then(function(result){  
-//     console.log(result) // logs "Stuff worked!"
-//     }, function(err){
-//         console.log(err) // Error: "It didn't work!"
-//     }
-// )        
+promise.then(function(result){  
+    console.log(result) // logs "Stuff worked!"
+    }, function(err){
+        console.log(err) // Error: "It didn't work!"
+    }
+)        
 
 //jQuery Example
 // var promise1 = $.get(something)  
