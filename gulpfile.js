@@ -10,7 +10,7 @@ gulp.task("watch", function(){
 })
 
 gulp.task("babel", function(){
-  return gulp.src(["main.js", "hi.js"])
+  return gulp.src(["main.js", "module.js"])
     .pipe(babel())
     .pipe(gulp.dest("dist"));
 
