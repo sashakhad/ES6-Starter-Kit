@@ -28,6 +28,12 @@ let fn = (x,y,z) => {
 }
 fn(1,2,3)
 
+//The Old Way
+// var fn = function(x,y,z){
+//   console.log(x,y,z)
+//   return 1
+// }
+
 //Single parameter and single line. But really, just put () around your params for legibility.
 //Implicit return 
 let add1 = x => x + 1 
@@ -48,17 +54,18 @@ function Animal(){
 var animal = new Animal();
 
 //OLD WAY
-// function Animal() {
-//   var self = this; // Some choose `that` instead of `self`. 
-//                    // Choose one and be consistent.
-//   self.age = 0;
+function Animal(age) {
 
-//   setInterval(function growUp() {
-//     // The callback refers to the `self` variable of which
-//     // the value is the expected object.
-//     self.age++;
-//   }, 1000);
-// }
+  var self = this; // Some choose `that` instead of `self`. 
+                   // Choose one and be consistent.
+  self.age = 0;
+
+  setInterval(function growUp() {
+    // The callback refers to the `self` variable of which
+    // the value is the expected object.
+    self.age++;
+  }, 1000);
+}
 
 
 //////////////////////////////////////////////Classes///////////////////////////////////////
@@ -146,7 +153,7 @@ function displayPerson(p){
     console.log(name, age);
 }
 
-var john = {name:"John", age: 20};  
+var john = {name:"John",  age: 20};  
 displayPerson(john); //logs John 20
 
 var nobody = {}
@@ -207,7 +214,7 @@ foo("here", "are", "the", "arguments") // --> "here are the arguments"
 // }
 
 function logNums(first, second, third, ...others){
-  console.log(first, second, third, others)
+  console.log(first, second, third)
   console.log(others)
 }
 logNums(1,2,3,4,5,6,7,8)
@@ -378,34 +385,34 @@ function fibRecurse(n){
 
 //Run-to-complete paradigm
 
-// function *abc(){  
-//     yield "a";
-//     yield "b";
-//     return "c";
-// }
+function *abc(){  
+    yield "a";
+    yield "b";
+    return "c";
+}
 
-// var generator = abc() NOTE: this does not call the function! It simply makes the generator object available for you to use in the the generator variable. abc() simply returns a "generator iterator" 
+var generator = abc() /*NOTE: this does not call the function! It simply makes the generator object available for you to use in the the generator variable. abc() simply returns a "generator iterator" */
 
-// generator.next() // returns {value: "a", done: false}  
-// generator.next() // returns {value: "b", done: false}  
-// generator.next() // returns {value: "c", done: true}  
-// generator.next() // returns {value: undefined, done: true} -- it has nothing else to generate!   
+generator.next() // returns {value: "a", done: false}  
+generator.next() // returns {value: "b", done: false}  
+generator.next() // returns {value: "c", done: true}  
+generator.next() // returns {value: undefined, done: true} -- it has nothing else to generate!   
 
 //Two-Way data passing
 
 // From Kyle Simpson
-// function *foo(x) {
-//     var y = 2 * (yield (x + 1));
-//     var z = yield (y / 3);
-//     return (x + y + z);
-// }
+function *foo(x) {
+    var y = 2 * (yield (x + 1));
+    var z = yield (y / 3);
+    return (x + y + z);
+}
 
-// var it = foo( 5 );
+var it = foo( 5 );
 
-// // note: not sending anything into `next()` here
-// console.log( it.next() );       // { value:6, done:false }
-// console.log( it.next( 12 ) );   // { value:8, done:false }
-// console.log( it.next( 13 ) );   // { value:42, done:true }
+// note: not sending anything into `next()` here
+console.log( it.next() );       // { value:6, done:false }
+console.log( it.next( 12 ) );   // { value:8, done:false }
+console.log( it.next( 13 ) );   // { value:42, done:true }
 
 // The yield (x + 1) is what sends out value 6. The second next(12) call sends 12 to that waiting yield (x + 1) expression, so y is set to 12 * 2, value 24. Then the subsequent yield (y / 3) (yield (24 / 3)) is what sends out the value 8. The third next(13) call sends 13 to that waiting yield (y / 3) expression, making z set to 13.
 
