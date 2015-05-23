@@ -33,7 +33,7 @@ fn(1,2,3)
 let add1 = x => x + 1 
 
 //No implicit return when function body is in {}
-let add2 = x => {return x + 2}
+let add2 = (x) => {return x + 2}
 
 //Lexical 'this' binding to whatever 'this' is during declaration
 //NEW WAY
@@ -358,14 +358,20 @@ babyHobbies.get(clone) // won't work!
 
 //////////////////////////////////////////////Tail Calls: Recursion///////////////////////////////////////
 
-function factorial(n, acc = 1) {
-    if (n <= 1) return acc;
-    return factorial(n - 1, n * acc);
-}
-
 // Stack overflow in most implementations today,
 // but safe on arbitrary inputs in ES6
-factorial(100000)
+function fibRecurseIter(n, a, b){
+  if(n === 0) return a;
+  fibRecurseIter(n - 1, a + b, a);
+}
+
+//Improper tail call
+function fibRecurse(n){
+  if(n === 0) return 0;
+  if(n === 0) return 1;
+  return fibRecurse(n - 1) + fibRecurse(n - 2);
+}
+
 
 ///////////////////////////////////////////////Generators///////////////////////////////////////
 
