@@ -47,6 +47,8 @@ function Animal(){
 
 var animal = new Animal();
 
+//NOTE: while the arrow function in ES6 is identical to the "fat arrow" function in coffeescript, there is no equivalent for the "skinny arrow" function in coffeescript.
+
 //OLD WAY
 // function Animal() {
 //   var self = this; // Some choose `that` instead of `self`. 
