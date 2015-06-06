@@ -1,5 +1,4 @@
 # ES6-Starter-Kit
-exploring the new features of ES6
 
 #####Instructions
 
