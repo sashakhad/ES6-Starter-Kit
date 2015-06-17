@@ -323,7 +323,7 @@ var promise = new Promise(function(resolve, reject){
     //some async code here
     //like AJAX, loading an image, writing to the DOM, etc
 
-    if(true/*nothing went wrong*/){
+    if(true){
         resolve("Stuff worked!");
     } else {
         reject(Error("It didn't work!"));
